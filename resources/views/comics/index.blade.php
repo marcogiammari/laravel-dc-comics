@@ -18,8 +18,10 @@
                 @endforeach
             </div>
             <div id="load-btn" class="d-flex justify-content-center">
-                <button class="btn text-white px-5 rounded-0">
-                    LOAD MORE
+                <button class="btn px-5 rounded-0">
+                    <a class="text-white" href="{{ route('comics.create') }}">
+                        ADD NEW COMIC
+                    </a>
                 </button>
             </div>
         </div>

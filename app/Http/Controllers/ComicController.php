@@ -15,12 +15,12 @@ class ComicController extends Controller
     public function index()
     {
 
-        $cards = Comic::all();
-
         $features = config('store.features');
         $links = config('store.links');
         $footerCols = config('store.footerCols');
         $footerSocialMedias = config('store.footerSocialMedias');
+        $cards = Comic::all();
+
 
         return view('comics.index', compact('cards', 'features', 'links', 'footerCols', 'footerSocialMedias'));
     }
@@ -32,7 +32,12 @@ class ComicController extends Controller
      */
     public function create()
     {
-        //
+        $features = config('store.features');
+        $links = config('store.links');
+        $footerCols = config('store.footerCols');
+        $footerSocialMedias = config('store.footerSocialMedias');
+
+        return view('comics.create', compact('features', 'links', 'footerCols', 'footerSocialMedias'));
     }
 
     /**
@@ -43,7 +48,21 @@ class ComicController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $newComic = new Comic();
+        $newComic->title = $data['title'];
+        $newComic->description = $data['description'];
+        $newComic->thumb = $data['thumb'];
+        $newComic->price = $data['price'];
+        $newComic->series = $data['series'];
+        $newComic->type = $data['type'];
+        $newComic->sale_date = $data['sale_date'];
+        $newComic->artists = '';
+        $newComic->writers = '';
+
+        $newComic->save();
+        return redirect()->route('comics.show', $newComic->id);
     }
 
     /**
