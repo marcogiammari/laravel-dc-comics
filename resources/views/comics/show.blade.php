@@ -52,9 +52,9 @@
                         </div>
                         <div class="col-8">
                             <span class="my-txt-secondary">
-                                {{-- @foreach ($comic['artists'] as $artist)
+                                @foreach (json_decode($comic['artists']) as $artist)
                                     {{ $artist }}
-                                @endforeach --}}
+                                @endforeach
                             </span>
                         </div>
                     </div>
@@ -65,9 +65,9 @@
                         </div>
                         <div class="col-8">
                             <span class="my-txt-secondary">
-                                {{-- @foreach ($comic['writers'] as $writer)
+                                @foreach (json_decode($comic['writers']) as $writer)
                                     {{ $writer }}
-                                @endforeach --}}
+                                @endforeach
                             </span>
                         </div>
                         <hr>

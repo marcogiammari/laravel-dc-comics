@@ -30,8 +30,8 @@ class ComicTableSeeder extends Seeder
             $newComic->sale_date = $el['sale_date'];
 
             // DA RISOLVERE: artists e writers sono array
-            $newComic->artists = '';
-            $newComic->writers = '';
+            $newComic->artists = json_encode($el['artists']);
+            $newComic->writers = json_encode($el['writers']);
 
             $newComic->save();
         }
