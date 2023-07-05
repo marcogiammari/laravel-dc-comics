@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Comic;
 
 class ComicController extends Controller
+
 {
     /**
      * Display a listing of the resource.
@@ -15,14 +16,17 @@ class ComicController extends Controller
     public function index()
     {
 
-        $features = config('store.features');
-        $links = config('store.links');
-        $footerCols = config('store.footerCols');
-        $footerSocialMedias = config('store.footerSocialMedias');
+        $data = [
+            "features" => config('store.features'),
+            "links" => config('store.links'),
+            "footerCols" => config('store.footerCols'),
+            "footerSocialMedias" => config('store.footerSocialMedias'),
+        ];
+
         $cards = Comic::all();
 
 
-        return view('comics.index', compact('cards', 'features', 'links', 'footerCols', 'footerSocialMedias'));
+        return view('comics.index', compact('cards', 'data'));
     }
 
     /**
@@ -32,12 +36,14 @@ class ComicController extends Controller
      */
     public function create()
     {
-        $features = config('store.features');
-        $links = config('store.links');
-        $footerCols = config('store.footerCols');
-        $footerSocialMedias = config('store.footerSocialMedias');
+        $data = [
+            "features" => config('store.features'),
+            "links" => config('store.links'),
+            "footerCols" => config('store.footerCols'),
+            "footerSocialMedias" => config('store.footerSocialMedias'),
+        ];
 
-        return view('comics.create', compact('features', 'links', 'footerCols', 'footerSocialMedias'));
+        return view('comics.create', compact('data'));
     }
 
     /**
@@ -58,8 +64,8 @@ class ComicController extends Controller
         $newComic->series = $data['series'];
         $newComic->type = $data['type'];
         $newComic->sale_date = $data['sale_date'];
-        $newComic->artists = '';
-        $newComic->writers = '';
+        $newComic->artists = json_encode($data['artists']);
+        $newComic->writers = json_encode($data['writers']);
 
         $newComic->save();
         return redirect()->route('comics.show', $newComic->id);
@@ -73,45 +79,69 @@ class ComicController extends Controller
      */
     public function show(Comic $comic)
     {
-        $features = config('store.features');
-        $links = config('store.links');
-        $footerCols = config('store.footerCols');
-        $footerSocialMedias = config('store.footerSocialMedias');
+        $data = [
+            "features" => config('store.features'),
+            "links" => config('store.links'),
+            "footerCols" => config('store.footerCols'),
+            "footerSocialMedias" => config('store.footerSocialMedias'),
+        ];
 
-        return view('comics.show', compact('comic', 'features', 'links', 'footerCols', 'footerSocialMedias'));
+        return view('comics.show', compact('comic', 'data'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Comic $comic
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Comic $comic)
     {
-        //
+        $data = [
+            "features" => config('store.features'),
+            "links" => config('store.links'),
+            "footerCols" => config('store.footerCols'),
+            "footerSocialMedias" => config('store.footerSocialMedias'),
+        ];
+
+        return view('comics.edit', compact('comic', 'data'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Comic $comic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Comic $comic)
     {
-        //
+        $data = $request->all();
+
+        $comic->title = $data['title'];
+        $comic->description = $data['description'];
+        $comic->thumb = $data['thumb'];
+        $comic->price = $data['price'];
+        $comic->series = $data['series'];
+        $comic->type = $data['type'];
+        $comic->sale_date = $data['sale_date'];
+        $comic->artists = json_encode($data['artists']);
+        $comic->writers = json_encode($data['writers']);
+        $comic->update();
+
+        return redirect()->route('comics.show', $comic);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Comic $comic
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Comic $comic)
     {
-        //
+        $comic->delete();
+
+        return redirect()->route('comics.index');
     }
 }

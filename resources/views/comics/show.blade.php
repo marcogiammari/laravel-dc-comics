@@ -38,6 +38,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row pt-5">
+                <form class="w-auto" action="{{ route('comics.destroy', $comic) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <input class="btn btn-danger" type="submit" value="DELETE COMIC">
+                </form>
+                <a class="w-auto" href="{{ route('comics.edit', $comic) }}">
+                    <button class="btn btn-primary">EDIT COMIC</button>
+                </a>
+            </div>
         </div>
     </section>
     <section id="secondary-info">
@@ -52,9 +62,7 @@
                         </div>
                         <div class="col-8">
                             <span class="my-txt-secondary">
-                                @foreach (json_decode($comic['artists']) as $artist)
-                                    {{ $artist }}
-                                @endforeach
+                                {{ json_decode($comic['artists']) }}
                             </span>
                         </div>
                     </div>
@@ -65,9 +73,7 @@
                         </div>
                         <div class="col-8">
                             <span class="my-txt-secondary">
-                                @foreach (json_decode($comic['writers']) as $writer)
-                                    {{ $writer }}
-                                @endforeach
+                                {{ json_decode($comic['writers']) }}
                             </span>
                         </div>
                         <hr>

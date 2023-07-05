@@ -31,7 +31,7 @@
     <section id="features">
         <div class="container py-5">
             <div class="row d-flex justify-content-center align-items-center text-light">
-                @foreach ($features as $feat)
+                @foreach ($data['features'] as $feat)
                     <div class="feature justify-content-center align-items-center col-12 col-md-6 col-lg-3 col-xl-2 my-3">
                         <a href="#" class="d-flex align-items-center gap-3">
                             <img class="img-fluid" src="{{ Vite::asset('/resources/images/' . $feat['path']) }}"
@@ -42,8 +42,5 @@
                 @endforeach
             </div>
         </div>
-        @php
-            var_dump($card);
-        @endphp
     </section>
 @endsection

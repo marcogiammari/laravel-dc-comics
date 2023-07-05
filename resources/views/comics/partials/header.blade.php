@@ -7,7 +7,7 @@
             </div>
             <div class="col-7 d-flex justify-content-end align-items-center">
                 <ul class="d-none d-lg-flex m-0">
-                    @foreach ($links as $link)
+                    @foreach ($data['links'] as $link)
                         <li class="d-flex flex-column justify-content-center">
                             <a class="position-relative my-link d-flex align-items-center py-3"
                                 href="#">{{ strtoupper($link) }}

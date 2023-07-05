@@ -13,4 +13,8 @@ use App\Http\Controllers\ComicController;
 |
 */
 
+Route::get('/', function () {
+    return redirect('/comics');
+});
+
 Route::resource('comics', ComicController::class);
