@@ -104,7 +104,9 @@ class ComicController extends Controller
             "footerSocialMedias" => config('store.footerSocialMedias'),
         ];
 
-        return view('comics.edit', compact('comic', 'data'));
+        $types = Comic::select('type')->distinct()->get()->all();
+
+        return view('comics.edit', compact('comic', 'types', 'data'));
     }
 
     /**

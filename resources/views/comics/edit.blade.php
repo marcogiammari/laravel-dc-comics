@@ -30,7 +30,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="inputType" class="form-label">Type</label>
-                    <input name="type" type="text" class="form-control" id="inputType" value="{{ $comic->type }}">
+                    <select name="type" class="form-control" id="inputType">
+                        @foreach ($types as $type)
+                            <option value="{{ $type->type }}">{{ $type->type }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="inputSaleDate" class="form-label">Sale Date</label>
