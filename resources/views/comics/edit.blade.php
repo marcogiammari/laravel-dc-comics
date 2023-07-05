@@ -32,7 +32,7 @@
                     <label for="inputType" class="form-label">Type</label>
                     <select name="type" class="form-control" id="inputType">
                         @foreach ($types as $type)
-                            <option value="{{ $type->type }}">{{ $type->type }}</option>
+                            <option @selected($comic->type == $type->type) value="{{ $type->type }}">{{ $type->type }}</option>
                         @endforeach
                     </select>
                 </div>

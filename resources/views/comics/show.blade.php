@@ -39,7 +39,9 @@
                 </div>
             </div>
             <div class="row pt-5">
-                <form class="w-auto" action="{{ route('comics.destroy', $comic) }}" method="post">
+
+                <button id="delete-btn" class="btn btn-danger w-auto">DELETE COMIC</button>
+                <form name="prova" class="w-auto" action="{{ route('comics.destroy', $comic) }}" method="post">
                     @csrf
                     @method('DELETE')
                     <input class="btn btn-danger" type="submit" value="DELETE COMIC">
@@ -47,6 +49,17 @@
                 <a class="w-auto" href="{{ route('comics.edit', $comic) }}">
                     <button class="btn btn-primary">EDIT COMIC</button>
                 </a>
+
+                <script>
+                    const deleteBtn = document.getElementById('delete-btn')
+                    deleteBtn.addEventListener("click", function() {
+                        let answer = confirm('Do you want to delete this comic?');
+                        if (answer) {
+                            document.forms["prova"].submit()
+                        };
+                    })
+                </script>
+
             </div>
         </div>
     </section>
