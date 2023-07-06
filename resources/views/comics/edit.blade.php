@@ -4,42 +4,91 @@
     <section class="bg-light">
         <div class="container py-5">
             <h2>Edit comic</h2>
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form action="{{ route('comics.update', $comic) }}" method="post">
                 @csrf
                 @method('PUT')
 
                 <div class="mb-3">
-                    <label for="inputTitle" class="form-label">Title</label>
-                    <input name="title" type="text" class="form-control" id="inputTitle" value="{{ $comic->title }}">
+                    <input name="title" type="text" class="form-control @error('title') is-invalid @enderror"
+                        id="inputTitle" value="{{ old('title') ?? $comic->title }}">
+
+                    @error('title')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
                 </div>
                 <div class="mb-3">
                     <label for="textareaDesc">Description</label>
-                    <textarea name="description" class="form-control" id="textareaDesc">{{ $comic->description }}</textarea>
+                    <textarea name="description" class="form-control @error('description') is-invalid @enderror" id="textareaDesc">{{ old('description') ?? $comic->description }}</textarea>
+
+                    @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
                 </div>
+
                 <div class="mb-3">
                     <label for="inputThumb" class="form-label">Thumb</label>
-                    <input name="thumb" type="text" class="form-control" id="inputThumb" value="{{ $comic->thumb }}">
+                    <input name="thumb" type="text" class="form-control @error('thumb') is-invalid @enderror"
+                        id="inputThumb" value="{{ old('thumb') ?? $comic->thumb }}">
+                    @error('thumb')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="mb-3">
+
                     <label for="inputPrice" class="form-label">Price</label>
-                    <input name="price" type="text" class="form-control" id="inputPrice" value="{{ $comic->price }}">
+                    <input name="price" type="number" step=".10"
+                        class="form-control @error('price') is-invalid @enderror" id="inputPrice"
+                        value="{{ old('price') ?? $comic->price }}">
+                    @error('price')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
                 </div>
                 <div class="mb-3">
+
                     <label for="inputSeries" class="form-label">Series</label>
-                    <input name="series" type="text" class="form-control" id="inputSeries" value="{{ $comic->series }}">
+                    <input name="series" type="text" class="form-control @error('series') is-invalid @enderror"
+                        id="inputSeries" value="{{ old('series') ?? $comic->series }}">
+                    @error('series')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
                 </div>
                 <div class="mb-3">
+
                     <label for="inputType" class="form-label">Type</label>
                     <select name="type" class="form-control" id="inputType">
+
                         @foreach ($types as $type)
-                            <option @selected($comic->type == $type->type) value="{{ $type->type }}">{{ $type->type }}</option>
+                            <option @selected(old($comic->type) == $type->type) value="{{ $type->type }}">{{ $type->type }}</option>
                         @endforeach
+
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="inputSaleDate" class="form-label">Sale Date</label>
                     <input name="sale_date" type="date" class="form-control" id="inputSaleDate"
                         value="{{ $comic->sale_date }}">
+                    @error('sale_date')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
                 </div>
                 <div class="mb-3">
                     <label for="inputArtists" class="form-label">Artists</label>

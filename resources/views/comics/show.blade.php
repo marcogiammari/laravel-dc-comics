@@ -38,13 +38,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row pt-5">
+            <div class="row pt-5 ms-1">
 
                 <button id="delete-btn" class="btn btn-danger w-auto">DELETE COMIC</button>
                 <form name="prova" class="w-auto" action="{{ route('comics.destroy', $comic) }}" method="post">
                     @csrf
                     @method('DELETE')
-                    <input class="btn btn-danger" type="submit" value="DELETE COMIC">
                 </form>
                 <a class="w-auto" href="{{ route('comics.edit', $comic) }}">
                     <button class="btn btn-primary">EDIT COMIC</button>
@@ -70,22 +69,22 @@
                     <h2 class="fs-2 py-2">Talent</h2>
                     <div class="row">
                         <hr>
-                        <div class="col-4">
+                        <div class="col-4 d-flex align-items-center">
                             Art by:
                         </div>
-                        <div class="col-8">
-                            <span class="my-txt-secondary">
+                        <div class="col-8 d-flex align-items-center">
+                            <span class="my-txt-secondary py-2">
                                 {{ json_decode($comic['artists']) }}
                             </span>
                         </div>
                     </div>
                     <div class="row">
                         <hr>
-                        <div class="col-4">
+                        <div class="col-4 d-flex align-items-center pb-3">
                             Written by:
                         </div>
-                        <div class="col-8">
-                            <span class="my-txt-secondary">
+                        <div class="col-8 d-flex align-items-center pb-3">
+                            <span class="my-txt-secondary py-2">
                                 {{ json_decode($comic['writers']) }}
                             </span>
                         </div>
@@ -98,9 +97,10 @@
                         <hr>
                         Series: <span class="my-txt-secondary">{{ $comic['series'] }}</span>
                         <hr>
-                        U.S. Price: <span class="my-txt-secondary">{{ $comic['price'] }}</span>
+                        U.S. Price: <span class="my-txt-secondary">{{ $comic['price'] }}$</span>
                         <hr>
-                        On Sale Date: <span class="my-txt-secondary">{{ $comic['sale_date'] }}</span>
+                        On Sale Date: <span
+                            class="my-txt-secondary">{{ date('m-d-Y', strtotime($comic['sale_date'])) }}</span>
                         <hr>
                     </div>
                 </div>
