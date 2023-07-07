@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StoreComicRequest;
+use App\Http\Requests\UpdateComicRequest;
 use App\Models\Comic;
+use Illuminate\Auth\Events\Validated;
 
 class ComicController extends Controller
 
@@ -19,45 +21,6 @@ class ComicController extends Controller
             "footerSocialMedias" => config('store.footerSocialMedias'),
         ];
     }
-
-    private function validateComic($data)
-    {
-
-        $today_date = date('m/d/Y', time());
-
-        $validator = Validator::make($data, [
-            'title' => 'required|min:3|max:30',
-            'description' => 'nullable:max:1000',
-            'thumb' => 'nullable|url|max:1000',
-            'price' => 'required|max:20',
-            'series' => 'required|max:50',
-            'type' => 'required',
-            'sale_date' => 'required|date|before:' . $today_date,
-            'artists' => 'nullable|max:300',
-            'writers' => 'nullable|max:300',
-
-        ], [
-            "title.required" => "Inserire un titolo",
-            "title.min" => "Il titolo deve essere almeno di :min caratteri",
-            "title.max" => "Il titolo non deve superare i :max caratteri",
-            "description.max" => "La descrizione non deve superare i :max caratteri",
-            "thumb.max" => "L'indirizzo non deve superare i :max caratteri",
-            "thumb.url" => "Inserisci un indirizzo valido",
-            "price.required" => "Inserire un prezzo",
-            "series.required" => "Inserire una serie",
-            "series.max" => "La serie non deve superare i :max caratteri",
-            "type.required" => "Inserire un tipo",
-            "sale_date.required" => "Inserire una data",
-            "sale_date.date" => "Inserire una data di formato gg/mm/aa",
-            "sale_date.before" => "Inserire una data anteriore a :date",
-            "artists.max" => "La sezione disegnatori non deve superare i :max caratteri",
-            "writers.max" => "La sezione autori non deve superare i :max caratteri"
-
-        ])->validate();
-
-        return $validator;
-    }
-
 
     /**
      * Display a listing of the resource.
@@ -91,21 +54,16 @@ class ComicController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreComicRequest $request)
     {
-        $data = $this->validateComic($request->all());
+        $data = $request->validated();
 
         $newComic = new Comic();
+        $data['artists'] = json_encode($data['artists']);
+        $data['writers'] = json_encode($data['writers']);
+        $newComic->fill($data);
 
-        $newComic->title = $data['title'];
-        $newComic->description = $data['description'] ?? 'n/a';
-        $newComic->thumb = $data['thumb'] ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuPeP8dYU_aXA7VYoN0OAzkr7dxo3WhRTb2Tadzc0sfDW8tLLiOSbdO-PdtHMs2EIdXSU&usqp=CAU';
-        $newComic->price = $data['price'];
-        $newComic->series = $data['series'];
-        $newComic->type = $data['type'];
-        $newComic->sale_date = $data['sale_date'];
-        $newComic->artists = json_encode($data['artists'] ?? 'n/a');
-        $newComic->writers = json_encode($data['writers'] ?? 'n/a');
+        //LASCIARE ALLA VISTA IL COMPITO DI VISUALIZZARE N/A IN CASO DI VALORE NULL
 
         $newComic->save();
         return redirect()->route('comics.show', $newComic->id);
@@ -144,25 +102,18 @@ class ComicController extends Controller
      * @param  Comic $comic
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Comic $comic)
+    public function update(UpdateComicRequest $request, Comic $comic)
     {
-        $data = $this->validateComic($request->all());
-
-
-        $comic->title = $data['title'];
-        $comic->description = $data['description'] ?? 'n/a';
-        $comic->thumb = $data['thumb'] ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuPeP8dYU_aXA7VYoN0OAzkr7dxo3WhRTb2Tadzc0sfDW8tLLiOSbdO-PdtHMs2EIdXSU&usqp=CAU';
-        $comic->price = $data['price'];
-        $comic->series = $data['series'];
-        $comic->type = $data['type'];
-        $comic->sale_date = $data['sale_date'];
-        $comic->artists = json_encode($data['artists'] ?? 'n/a');
-        $comic->writers = json_encode($data['writers'] ?? 'n/a');
+        $data = $request->validated();
+        $data['artists'] = json_encode($data['artists']);
+        $data['writers'] = json_encode($data['writers']);
+        $comic->fill($data);
 
         $comic->update();
 
         // pattern POST/REDIRECT/GET per evitare il problema del reinvio del form
-        return redirect()->route('comics.show', $comic);
+        // return redirect()->route('comics.show', $comic);        
+        return to_route('comics.show', $comic);
     }
 
     /**
