@@ -8,7 +8,10 @@
                 @foreach ($cards as $i => $card)
                     <div class="my_card col-2 text-center d-flex flex-column gap-3">
                         <div class="img-wrapper">
-                            <a href="{{ route('comics.show', $card->id) }}"><img class="img-fluid" src="{{ $card['thumb'] }}"
+                            <a href="{{ route('comics.show', $card->id) }}"><img class="img-fluid"
+                                    src="@if ($card['thumb']) {{ $card['thumb'] }}
+                            @else
+                                {{ Vite::asset('/resources/images/na.png') }} @endif"
                                     alt="card.series"></a>
                         </div>
                         <div>

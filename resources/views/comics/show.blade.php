@@ -5,7 +5,11 @@
         <div id="banner-primary"></div>
         <div id="primary-info" class="container py-5">
             <div class="img-wrapper position-relative">
-                <img class="img-fluid position-absolute z-0" src="{{ $comic['thumb'] }}" alt="{{ $comic['title'] }}">
+                <img class="img-fluid position-absolute z-0"
+                    src="@if ($comic['thumb']) {{ $comic['thumb'] }}
+                    @else
+                        {{ Vite::asset('/resources/images/na.png') }} @endif"
+                    alt="{{ $comic['title'] }}">
                 <span class="position-absolute">COMIC BOOK</span>
                 <span class="position-absolute bottom-0 w-100 text-center">VIEW GALLERY</span>
             </div>
