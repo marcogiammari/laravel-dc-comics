@@ -28,7 +28,7 @@ class ComicController extends Controller
         $validator = Validator::make($data, [
             'title' => 'required|min:3|max:30',
             'description' => 'nullable:max:1000',
-            'thumb' => 'nullable|max:1000',
+            'thumb' => 'nullable|url|max:1000',
             'price' => 'required|max:20',
             'series' => 'required|max:50',
             'type' => 'required',
@@ -42,6 +42,7 @@ class ComicController extends Controller
             "title.max" => "Il titolo non deve superare i :max caratteri",
             "description.max" => "La descrizione non deve superare i :max caratteri",
             "thumb.max" => "L'indirizzo non deve superare i :max caratteri",
+            "thumb.url" => "Inserisci un indirizzo valido",
             "price.required" => "Inserire un prezzo",
             "series.required" => "Inserire una serie",
             "series.max" => "La serie non deve superare i :max caratteri",
